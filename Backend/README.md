@@ -39,6 +39,43 @@ Example request body:
 - 500 Internal Server Error
   - Description: Unexpected server error or DB error.
 
+## POST /users/login
+
+Authenticate a user and return a JSON Web Token on success.
+
+- Method: POST
+- Path: `/users/login`
+- Content-Type: `application/json`
+
+### Request body (JSON)
+
+All fields are required.
+
+- `email` (string) — must be a valid email address
+- `password` (string) — min length: 8
+
+Example request body:
+
+```json
+{ "email": "johndoe@example.com", "password": "strongpassword123" }
+```
+
+### Responses
+
+- 200 OK
+  - Description: Login successful.
+  - Body: `{ message: "Login successful", token: "<jwt>", user: { ... } }`
+
+- 400 Bad Request
+  - Description: Validation failed. Returns an `errors` array.
+
+- 401 Unauthorized
+  - Description: Invalid email or password.
+  - Body example: `{ "message": "Invalid email or password" }`
+
+- 500 Internal Server Error
+  - Description: Unexpected server or DB error.
+
 ### Notes
 
 - Environment variables required: `DATABASE_URL` (MongoDB URI) and `JWT_SECRET` (used to sign the token).
