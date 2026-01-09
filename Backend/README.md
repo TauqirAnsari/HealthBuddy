@@ -88,3 +88,35 @@ curl -X POST http://localhost:4000/users/register \
   -H "Content-Type: application/json" \
   -d '{"username":"johndoe","email":"johndoe@example.com","password":"strongpassword123"}'
 ```
+
+## GET /users/profile
+
+Retrieve the authenticated user's profile.
+
+- Method: GET
+- Path: `/users/profile`
+- Headers:
+  - `Authorization: Bearer <token>`
+
+### Responses
+
+- 200 OK
+  - Description: Returns the authenticated user's profile (password is not included).
+  - Body example: `{ "_id": "...", "username": "johndoe", "email": "johndoe@example.com", ... }`
+
+- 401 Unauthorized
+  - Description: Missing or invalid token.
+  - Body example: `{ "message": "Unauthorized" }`
+
+- 500 Internal Server Error
+  - Description: Unexpected server or DB error.
+
+### Notes
+
+- This endpoint requires a valid JWT in the `Authorization` header (Bearer token). Tokens are signed using `JWT_SECRET` and are valid for 1 hour.
+
+### Example curl
+
+```bash
+curl -H "Authorization: Bearer <jwt>" http://localhost:4000/users/profile
+```
