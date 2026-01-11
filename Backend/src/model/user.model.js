@@ -1,6 +1,6 @@
-const mongoose = require('mongoose');
-const bcrypt = require('bcrypt');
-const jwt = require('jsonwebtoken');
+const mongoose = require('mongoose'); //used to create schemas and models for MongoDB
+const bcrypt = require('bcrypt'); //used to hash and compare passwords securely
+const jwt = require('jsonwebtoken'); //used to create login tokens
 
 const userSchema = new mongoose.Schema({
     username: {
@@ -31,7 +31,7 @@ userSchema.methods.comparePassword = async function(password) {
 }
 
 userSchema.statics.hashPassword = async function(password) {
-    return await bcrypt.hash(password, 10);
+    return await bcrypt.hash(password, 10); //10 = salt rounds (security level)
 }
 
 const userModel = mongoose.model('User', userSchema);
