@@ -1,5 +1,7 @@
 const { GoogleGenerativeAI } = require("@google/generative-ai");
 const calculateBMI = require("../utils/bmiCalculator");
+const calculateBMR = require("../utils/bmrCalculator");
+const calculateTDEE = require("../utils/tdeeCalculator");
 
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
 
@@ -24,7 +26,10 @@ async function generateDietPlan(userData) {
     weeklyBudget
   } = userData;
 
+  // ✅ Calculations
   const bmiData = calculateBMI(weight, height);
+  const bmr = calculateBMR(weight, height, age, gender);
+  const dailyCalories = calculateTDEE(bmr, activityLevel);
 
   const allergies =
     foodAllergies && foodAllergies.length > 0
@@ -40,6 +45,8 @@ Gender: ${gender}
 Height: ${height} cm
 Weight: ${weight} kg
 BMI: ${bmiData.bmi} (${bmiData.category})
+BMR: ${bmr} kcal/day
+Daily Calorie Requirement (TDEE): ${dailyCalories} kcal/day
 Profession: ${profession}
 Goal: ${goal}
 Diet Type: ${dietType}
@@ -53,7 +60,7 @@ Rules:
 - Meals must fit the budget
 - Mention portion sizes
 - No junk food
-- Diet that supports their proffession and activity level
+- Diet that supports their profession and activity level
 - Respond ONLY in valid JSON (no markdown, no backticks)
 
 Create a 7-day Indian diet plan in STRICT JSON.
@@ -64,31 +71,26 @@ For each meal:
   - estimated_calories
 
 Rules for hole_day_calories_need:
-- Only show calorie needs based on BMI, age, gender, activity level, profession and goal do not add description
+- Use the calculated daily calorie requirement (${dailyCalories} kcal/day)
+- Do not add explanation text
 
 Rules for meal_name:
-- Combine meal name + description + portion size into ONE single sentence
-- Include quantity and grams/ml inside meal_name
-- DO NOT use separate description or portion_size keys
+- Combine meal name + description + portion size into ONE sentence
+- Include quantity in grams/ml
+- No separate description or portion keys
 
-Example format:
-"breakfast": {
-  "meal_name": "2 medium Aloo Paratha (100g each) with 1 small bowl plain curd (150g) and 1 tsp pickle",
-  "estimated_calories": "450-480 kcal"
-}
-
-The "day" field MUST be exactly:
+The "day" field MUST be exactly: 
 "Day 1", "Day 2", "Day 3", "Day 4", "Day 5", "Day 6", "Day 7"
 
 Rule for Exercise:
- - Excercise that perform based on user's activity level and profession and goal
+- Suggest exercise based on profession, activity level, and goal
 
 JSON structure must be:
 hole_day_calories_need
 daily_plan [ day, exercise_name, breakfast, lunch, evening_snack, dinner, calories ]
 budget_note
 
-Respond ONLY with valid JSON (no markdown, no backticks).
+Respond ONLY with valid JSON.
 `;
 
   const model = genAI.getGenerativeModel({
@@ -97,11 +99,12 @@ Respond ONLY with valid JSON (no markdown, no backticks).
 
   const result = await model.generateContent(prompt);
   const rawText = result.response.text();
-
   const cleanJSON = extractJSON(rawText);
 
   return {
     bmi: bmiData,
+    bmr,
+    dailyCalories,
     dietPlan: JSON.parse(cleanJSON)
   };
 }
