@@ -18,8 +18,8 @@ app.use(cookieParser());
 
 
 //Routes
-app.use('/users', userRoutes);
-app.use('/api/diet', dietRouter); // Diet recommendation routes
+app.use('/healthbuddy/v1/users', userRoutes);
+app.use('/healthbuddy/v1/api/diet', dietRouter); // Diet recommendation routes
 
 
 
