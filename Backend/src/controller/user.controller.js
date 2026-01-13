@@ -24,7 +24,12 @@ module.exports.registerUser = async (req, res) => {
 
     res.status(201).json({
         message: 'User registered successfully',
-        token,user
+        token,
+        user:{
+            _id: user._id,
+            username: user.username,
+            email: user.email
+        }
     });
 }
 
@@ -59,10 +64,17 @@ module.exports.loginUser = async (req, res) => {
     res.status(200).json({
         message: 'Login successful',
         token,
-        user
+        user:{
+            _id: user._id,
+            username: user.username,
+            email: user.email   
+        }
     });
 }
 
 module.exports.getUserProfile = async (req, res) => {
-    res.status(200).json(req.user);
-}
+    res.status(200).json({
+        success: true,
+        user: req.user
+    });
+};
