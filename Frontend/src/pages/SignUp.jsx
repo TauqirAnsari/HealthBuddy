@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { User, Mail, Lock, Link } from 'lucide-react';
+import { User, Mail, Lock } from 'lucide-react';
 
 const Signup = () => {
   return (

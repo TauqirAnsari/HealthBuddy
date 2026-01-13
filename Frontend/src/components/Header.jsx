@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { useState } from 'react';
+import { Link } from "react-router-dom";
+
 
 const Navbar = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -12,17 +13,19 @@ const Navbar = () => {
         <div className="flex justify-between items-center h-20">
           
           {/* --- LEFT SIDE: LOGO --- */}
-          <div className="shrink-0 flex items-center cursor-pointer">
-            {/* Custom SVG Icon to match the 'H' in the image */}
-            <div className="w-10 h-10 bg-blue-600 rounded-lg flex items-center justify-center mr-2 text-white font-bold text-2xl relative overflow-hidden">
-               H
-               {/* Decorative faint swoosh */}
-               <div className="absolute top-0 right-0 w-4 h-4 bg-white opacity-20 rounded-bl-full"></div>
+          <Link to="/">
+            <div className="shrink-0 flex items-center cursor-pointer">
+              {/* Custom SVG Icon to match the 'H' in the image */}
+              <div className="w-10 h-10 bg-blue-600 rounded-lg flex items-center justify-center mr-2 text-white font-bold text-2xl relative overflow-hidden">
+                H
+                {/* Decorative faint swoosh */}
+                <div className="absolute top-0 right-0 w-4 h-4 bg-white opacity-20 rounded-bl-full"></div>
+              </div>
+              <span className="text-2xl font-bold text-gray-800 tracking-tight">
+                Health<span className="text-blue-600">Buddy</span>
+              </span>
             </div>
-            <span className="text-2xl font-bold text-gray-800 tracking-tight">
-              Health<span className="text-blue-600">Buddy</span>
-            </span>
-          </div>
+          </Link>  
 
           {/* --- RIGHT SIDE: DESKTOP MENU --- */}
           <div className="hidden md:flex items-center space-x-8">

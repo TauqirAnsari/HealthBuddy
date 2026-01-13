@@ -1,4 +1,3 @@
-import { Link } from 'react-router-dom';
 import React, { useState } from 'react';
 
 const ProfileForm = () => {
@@ -43,12 +42,12 @@ const ProfileForm = () => {
         
         {/* Header Section */}
         <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4 mb-8 border-b pb-4">
-          <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">Profile</h1>
+          <h1 className="text-2xl sm:text-3xl font-bold text-blue-600">Profile</h1>
           
           {/* Edit Button (Top Right) */}
           <button 
             onClick={() => setIsEditing(!isEditing)}
-            className="flex items-center justify-center gap-2 bg-gray-300 hover:bg-gray-200 text-blue-700 px-4 py-2 rounded-md transition duration-200 text-sm font-medium w-full sm:w-auto"
+            className="flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-800 text-white px-4 py-2 rounded-md transition duration-200 text-sm font-medium w-full sm:w-auto"
           >
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
               <path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"></path>
@@ -218,7 +217,7 @@ const ProfileForm = () => {
             <div className="mt-8 pt-4">
               <button
                 type="submit"
-                className="w-full md:w-auto bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-8 rounded-md shadow-md transition duration-200"
+                className="w-full md:w-auto bg-blue-600 hover:bg-blue-800 text-white font-bold py-2 px-8 rounded-md shadow-md transition duration-200"
               >
                 Update / Save
               </button>

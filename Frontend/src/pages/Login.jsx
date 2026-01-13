@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { User, Lock, Eye, EyeOff, Loader2, Link } from 'lucide-react';
+import { User, Lock, Eye, EyeOff, Loader2 } from 'lucide-react';
 
 const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
