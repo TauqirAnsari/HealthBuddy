@@ -1,20 +1,38 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { User, Lock, Eye, EyeOff, Loader2 } from 'lucide-react';
+import { LoginApi } from '../Api/AllApi';
 
 const Login = () => {
+  const navigate = useNavigate();
+
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
 
-  const handleLogin = () => {
-    setLoading(true);
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
 
-    // Fake API delay
-    setTimeout(() => {
-      setLoading(false);
-      alert("Logged in (demo)");
-    }, 2000);
+  const handleOnLogin = async (e) => {
+    e.preventDefault();
+    try{
+        if(!email || !password) {
+          alert("Please fill all the fields");
+          return; 
+        }
+        const res = await LoginApi({ email, password });
+        if(res.status === 200) {
+          alert(res.data.message);
+          navigate('/');
+        }
+    } catch (error) {
+        console.error("Error during login:", error);
+        alert("An error occurred during login. Please try again.");
+      } finally {
+        setLoading(false);
+      } 
+
   };
+
 
   return (
     <div className="relative min-h-screen w-screen bg-linear-to-br from-blue-50 to-blue-100 flex items-center justify-center p-4 overflow-hidden font-sans">
@@ -42,7 +60,7 @@ const Login = () => {
           <h2 className="text-2xl font-bold text-blue-500">Welcome Back</h2>
         </div>
 
-        <form className="space-y-5" onSubmit={(e) => e.preventDefault()}>
+        <form className="space-y-5" onSubmit={handleOnLogin}>
 
           {/* Email */}
           <div className="relative group">
@@ -51,7 +69,9 @@ const Login = () => {
             </div>
             <input
               type="text"
-              placeholder="Username or Email"
+              placeholder="Email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
               className="w-full pl-10 pr-4 py-3 bg-gray-100 border border-gray-200 text-gray-900 text-sm rounded-lg focus:ring-2 focus:ring-blue-400 focus:bg-white focus:shadow-md outline-none transition-all placeholder-gray-400"
             />
           </div>
@@ -65,6 +85,8 @@ const Login = () => {
             <input
               type={showPassword ? "text" : "password"}
               placeholder="Password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)} 
               className="w-full pl-10 pr-12 py-3 bg-gray-100 border border-gray-200 text-gray-900 text-sm rounded-lg focus:ring-2 focus:ring-blue-400 focus:bg-white focus:shadow-md outline-none transition-all placeholder-gray-400"
             />
 
@@ -80,8 +102,8 @@ const Login = () => {
 
           {/* Login Button */}
           <button
-            type="button"
-            onClick={handleLogin}
+            type="submit"
+            onClick={handleOnLogin}
             disabled={loading}
             className={`w-full flex items-center justify-center gap-2 py-3 mt-10 rounded-xl font-medium text-white transition-all
               ${loading

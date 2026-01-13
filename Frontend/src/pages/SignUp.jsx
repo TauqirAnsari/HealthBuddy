@@ -1,7 +1,48 @@
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { User, Mail, Lock } from 'lucide-react';
+import { useState } from 'react';
+import { RegisterApi } from '../Api/AllApi';
 
 const Signup = () => {
+
+  const navigate = useNavigate();
+
+  const [loading, setLoading] = useState(false);
+
+  const [username, setUsername] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+
+
+  const handleOnSubmit = async (e) => {
+    e.preventDefault();
+
+    if(!username || !email || !password) {
+      alert("Please fill all the fields");
+      return; 
+    }
+    try{
+      // Proceed with form submission logic (e.g., API call)
+      setLoading(true);
+      const res = await RegisterApi({ username, email, password });
+
+      if(res.status === 201) {
+        alert("Registration successful! Please log in.");
+        navigate('/login');
+      }
+    }catch (error) {
+    console.error("Error during registration:", error);
+
+    if (error.response) {
+      alert(error.response.data?.message || "Registration failed");
+    } else {
+      alert("Server error. Please try again.");
+    }
+  } finally {
+    setLoading(false);
+  }
+  };
+
   return (
     // Main Container
     <div className="min-h-screen w-screen bg-linear-to-br from-blue-50 to-blue-100 flex flex-col justify-center items-center relative overflow-hidden font-sans">
@@ -32,7 +73,7 @@ const Signup = () => {
           </div>
 
           {/* Form */}
-          <form className="space-y-5">
+          <form className="space-y-5" onSubmit={handleOnSubmit}>
             
             {/* Full Name Input */}
             <div className="relative group">
@@ -42,6 +83,9 @@ const Signup = () => {
               <input
                 type="text"
                 placeholder="Full Name"
+                name='username'
+                value = {username}
+                onChange={(e) => setUsername(e.target.value)}
                 className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500/50 focus:border-blue-500 transition-all text-gray-700 placeholder-gray-400"
               />
             </div>
@@ -54,6 +98,9 @@ const Signup = () => {
               <input
                 type="email"
                 placeholder="Email"
+                name='email'
+                value = {email}
+                onChange={(e) => setEmail(e.target.value)}  
                 className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500/50 focus:border-blue-500 transition-all text-gray-700 placeholder-gray-400"
               />
             </div>
@@ -66,6 +113,9 @@ const Signup = () => {
               <input
                 type="password"
                 placeholder="Password"
+                name='password'
+                value = {password}
+                onChange={(e) => setPassword(e.target.value)} 
                 className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500/50 focus:border-blue-500 transition-all text-gray-700 placeholder-gray-400"
               />
             </div>
@@ -79,10 +129,11 @@ const Signup = () => {
 
             {/* Submit Button */}
             <button
-              type="button"
+              type="submit"
+              disabled={loading}
               className="w-full bg-linear-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white font-semibold py-3 rounded-xl shadow-lg shadow-blue-500/30 transition-all transform active:scale-[0.98]"
             >
-              Sign Up
+              {loading ? 'Singing Up...' : 'Sign Up'}
             </button>
           </form>
 

@@ -14,7 +14,7 @@ All fields are required.
 
 - `username` (string) — min length: 2
 - `email` (string) — must be a valid email address
-- `password` (string) — min length: 8
+- `password` (string) — min length: 4
 
 Example request body:
 
@@ -29,14 +29,15 @@ Example request body:
 ### Responses
 
 - 201 Created
+
   - Description: User created successfully.
   - Body: `{ message: "User registered successfully", token: "<jwt>", user: { ... } }`
-
 - 400 Bad Request
+
   - Description: Validation failed. Returns an `errors` array describing validation issues.
   - Body example: `{ "errors": [ { "msg": "Invalid email address", "param": "email", ... } ] }`
-
 - 500 Internal Server Error
+
   - Description: Unexpected server error or DB error.
 
 ## POST /users/login
@@ -63,17 +64,18 @@ Example request body:
 ### Responses
 
 - 200 OK
+
   - Description: Login successful.
   - Body: `{ message: "Login successful", token: "<jwt>", user: { ... } }`
-
 - 400 Bad Request
-  - Description: Validation failed. Returns an `errors` array.
 
+  - Description: Validation failed. Returns an `errors` array.
 - 401 Unauthorized
+
   - Description: Invalid email or password.
   - Body example: `{ "message": "Invalid email or password" }`
-
 - 500 Internal Server Error
+
   - Description: Unexpected server or DB error.
 
 ### Notes
@@ -101,14 +103,15 @@ Retrieve the authenticated user's profile.
 ### Responses
 
 - 200 OK
+
   - Description: Returns the authenticated user's profile (password is not included).
   - Body example: `{ "_id": "...", "username": "johndoe", "email": "johndoe@example.com", ... }`
-
 - 401 Unauthorized
+
   - Description: Missing or invalid token.
   - Body example: `{ "message": "Unauthorized" }`
-
 - 500 Internal Server Error
+
   - Description: Unexpected server or DB error.
 
 ### Notes

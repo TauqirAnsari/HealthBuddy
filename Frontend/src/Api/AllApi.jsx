@@ -2,7 +2,7 @@
 import Api from '../config/AoxisConfig';
 
 export  const RegisterApi = async (data) => {
-    return await Api.post('users/register', data);
+    return Api.post('users/register', data);
 }
 
 export  const LoginApi = async (data) => {
