@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { User, Lock, Eye, EyeOff, Loader2 } from 'lucide-react';
+import { Link } from 'react-router-dom';
+import { User, Lock, Eye, EyeOff, Loader2, Link } from 'lucide-react';
 
 const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -103,9 +104,9 @@ const Login = () => {
         {/* Signup */}
         <div className="mt-8 text-center text-sm text-gray-500">
           Not a member?{" "}
-          <a href="#" className="text-blue-600 font-semibold hover:underline">
+          <Link to="/signup" className="text-blue-600 font-semibold hover:underline">
             Sign Up
-          </a>
+          </Link>
         </div>
       </div>
     </div>

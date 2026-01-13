@@ -1,5 +1,5 @@
 import SignUp from "./SignUp";
 import Login from "./Login";
-import DetailsForm from "./DetailsForm";
+import ProfileForm from "./ProfileForm";
 import Landing from "./Landing";
-export {SignUp, Login, DetailsForm, Landing};
+export {SignUp, Login, Landing, ProfileForm};

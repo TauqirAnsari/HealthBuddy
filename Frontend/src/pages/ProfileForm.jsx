@@ -1,6 +1,7 @@
+import { Link } from 'react-router-dom';
 import React, { useState } from 'react';
 
-const Profile = () => {
+const ProfileForm = () => {
   // State to handle form data
   const [formData, setFormData] = useState({
     gender: 'male',
@@ -229,4 +230,4 @@ const Profile = () => {
   );
 };
 
-export default Profile;
+export default ProfileForm;

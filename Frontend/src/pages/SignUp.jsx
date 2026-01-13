@@ -1,5 +1,5 @@
-import React from 'react';
-import { User, Mail, Lock } from 'lucide-react';
+import { Link } from 'react-router-dom';
+import { User, Mail, Lock, Link } from 'lucide-react';
 
 const Signup = () => {
   return (
@@ -90,9 +90,9 @@ const Signup = () => {
           <div className="mt-6 text-center">
             <p className="text-sm text-gray-600">
               Have an account?{' '}
-              <a href="#" className="text-blue-600 font-semibold hover:underline">
+              <Link to="/login" className="text-blue-600 font-semibold hover:underline">
                 Log in
-              </a>
+              </Link>
             </p>
           </div>
 

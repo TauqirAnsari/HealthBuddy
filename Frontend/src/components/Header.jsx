@@ -26,20 +26,20 @@ const Navbar = () => {
 
           {/* --- RIGHT SIDE: DESKTOP MENU --- */}
           <div className="hidden md:flex items-center space-x-8">
-            <a href="/profile" className="text-gray-600 hover:text-blue-600 font-medium transition-colors">
+            <Link to="/profileform" className="text-gray-600 hover:text-blue-600 font-medium transition-colors">
               Profile
-            </a>
-            <a href="#" className="text-gray-600 hover:text-blue-600 font-medium transition-colors">
+            </Link>
+            <Link to="/products" className="text-gray-600 hover:text-blue-600 font-medium transition-colors">
               Products
-            </a>
-            <a href="#" className="text-gray-600 hover:text-blue-600 font-medium transition-colors">
+            </Link>
+            <Link to="/dashboard" className="text-gray-600 hover:text-blue-600 font-medium transition-colors">
               Dashboard
-            </a>
+            </Link>
             {/* New Login Option */}
-            <a href="#" className="text-gray-600 hover:text-blue-600 font-medium transition-colors">
+            <Link to="/login" className="text-gray-600 hover:text-blue-600 font-medium transition-colors">
               Login
-            </a>
-            
+            </Link>
+
             {/* User Icon (🚹 style) with Dropdown */}
             <div className="relative ml-4">
               <button 
