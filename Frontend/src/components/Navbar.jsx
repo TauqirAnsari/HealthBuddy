@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import Profile from "./Profile";
 import { Link } from 'react-router-dom';
 
 const Navbar = () => {
@@ -42,6 +43,7 @@ const Navbar = () => {
             
             {/* User Icon (🚹 style) with Dropdown */}
             <div className="relative ml-4">
+               <Profile />
               <button 
                 onClick={() => setIsProfileOpen(!isProfileOpen)}
                 className="text-blue-600 hover:text-blue-700 transition-colors focus:outline-none flex items-center"
