@@ -1,14 +1,20 @@
-import React, { useState } from 'react';
+import { getWeeklyDietApi } from '../Api/dietApi';
+import { useState } from 'react';
+import { useNavigate } from "react-router-dom";
 
 const ProfileForm = () => {
+
+  const navigate = useNavigate();
+
+
   // State to handle form data
   const [formData, setFormData] = useState({
-    gender: 'male',
     age: '',
-    weight: '',
+    gender: 'male',
     height: '',
-    fitnessGoal: 'weight_loss',
+    weight: '',
     profession: '',
+    goal: 'weight_loss',
     dietType: 'vegetarian',
     activityLevel: 'medium',
     foodAllergies: '',
@@ -18,20 +24,78 @@ const ProfileForm = () => {
   // State to toggle between Edit and View mode
   // set to 'true' if you want it editable by default, 'false' if you want it locked initially
   const [isEditing, setIsEditing] = useState(true);
+  const [loading, setLoading] = useState(false);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData({
-      ...formData,
+    setFormData((prev) => ({
+      ...prev,
       [name]: value
-    });
+    }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    alert('Profile Updated Successfully!');
-    setIsEditing(false); // Lock the form after saving
+
+    // Basic validation
+    if (
+      Number(formData.age) <= 0 ||
+      Number(formData.height) <= 0 ||
+      Number(formData.weight) <= 0 ||
+      !formData.profession ||
+      Number(formData.weeklyBudget) <= 0
+    ) {
+      alert("Please fill all required fields");
+      return;
+    }
+
+    // Activity level mapping (frontend → backend)
+    const activityMap = {
+      low: "sedentary",
+      medium: "moderately_active",
+      high: "very_active"
+    };
+
+    // 🔁 Prepare data exactly as backend expects
+    const payload = {
+      gender: formData.gender,
+      age: Number(formData.age),
+      weight: Number(formData.weight),
+      height: Number(formData.height),
+      profession: formData.profession,
+      goal: formData.goal,
+      dietType: formData.dietType,
+      activityLevel: activityMap[formData.activityLevel] || "moderately_active",
+      foodAllergies: formData.foodAllergies
+        ? formData.foodAllergies
+            .split(",")
+            .map(item => item.trim())
+            .filter(Boolean)
+        : [],
+      weeklyBudget: Number(formData.weeklyBudget)
+    };
+
+    try {
+      setLoading(true);
+
+      const res = await getWeeklyDietApi(payload);
+      console.log("Diet Result:", res.data);
+
+      alert("Profile saved & diet generated successfully!");
+      setIsEditing(false);
+
+      navigate("/diettable", {
+      state: res.data
+      });
+
+    } catch (error) {
+      console.error(error);
+      alert("Failed to generate diet plan");
+    } finally {
+      setLoading(false);
+    }
   };
+
 
   return (
    <div className="min-h-screen w-screen bg-blue-100 flex justify-center items-start sm:items-center py-6 sm:py-10 px-3 sm:px-6 font-sans">
@@ -45,8 +109,9 @@ const ProfileForm = () => {
           <h1 className="text-2xl sm:text-3xl font-bold text-blue-600">Profile</h1>
           
           {/* Edit Button (Top Right) */}
-          <button 
-            onClick={() => setIsEditing(!isEditing)}
+          <button
+            type="button" 
+            onClick={() => setIsEditing(true)}
             className="flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-800 text-white px-4 py-2 rounded-md transition duration-200 text-sm font-medium w-full sm:w-auto"
           >
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -124,8 +189,8 @@ const ProfileForm = () => {
           <div className="grid grid-cols-1 md:grid-cols-3 md:items-center gap-4">
             <label className="font-semibold text-gray-700">Fitness Goal:</label>
             <select
-              name="fitnessGoal"
-              value={formData.fitnessGoal}
+              name="goal"
+              value={formData.goal}
               onChange={handleChange}
               disabled={!isEditing}
               className="col-span-2 w-full p-3 text-base border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white disabled:bg-gray-50 disabled:text-gray-500"
@@ -207,7 +272,7 @@ const ProfileForm = () => {
                 value={formData.weeklyBudget}
                 onChange={handleChange}
                 disabled={!isEditing}
-                className="w-full pl-8 p-3 text-base border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:bg-gray-50 disabled:text-gray-500"
+                className="w-full pl-10 p-3 text-base border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:bg-gray-50 disabled:text-gray-500"
               />
             </div>
           </div>
@@ -217,9 +282,10 @@ const ProfileForm = () => {
             <div className="mt-8 pt-4">
               <button
                 type="submit"
+                disabled={loading}
                 className="w-full md:w-auto bg-blue-600 hover:bg-blue-800 text-white font-bold py-2 px-8 rounded-md shadow-md transition duration-200"
               >
-                Update / Save
+                {loading ? 'Generating Diet...' : 'Update / Save'}
               </button>
             </div>
           )}
