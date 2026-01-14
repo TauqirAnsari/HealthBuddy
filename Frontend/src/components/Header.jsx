@@ -30,7 +30,7 @@ const Navbar = () => {
           {/* --- RIGHT SIDE: DESKTOP MENU --- */}
           <div className="hidden md:flex items-center space-x-8">
             <Link to="/profileform" className="text-gray-600 hover:text-blue-600 font-medium transition-colors">
-              Profile
+              ProfileForm
             </Link>
             <Link to="/products" className="text-gray-600 hover:text-blue-600 font-medium transition-colors">
               Products
