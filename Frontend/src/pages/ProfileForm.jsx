@@ -88,9 +88,13 @@ const ProfileForm = () => {
       state: res.data
       });
 
-    } catch (error) {
-      console.error(error);
-      alert("Failed to generate diet plan");
+    } catch (error) {  
+          if (error.response?.status === 401) {
+            alert(error.response.data.message || "Please login first");
+            navigate("/login");
+          } else {
+            alert("Failed to generate diet plan");
+          }
     } finally {
       setLoading(false);
     }
