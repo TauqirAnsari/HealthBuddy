@@ -1,6 +1,4 @@
-import DietCard from "../components/DietCard"
-import ExerciseCard from "../components/ExerciseCard"
-import MentalHealthCard from "../components/MentalHealthCard"
+import {DietCard, ExerciseCard, MentalHealthCard} from "../components/Index";
 
 export default function Dashboard() {
   return (

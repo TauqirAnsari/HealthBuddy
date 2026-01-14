@@ -10,7 +10,7 @@ export default function DietCard() {
   )
 
   return (
-    <div className="bg-white rounded-3xl p-8 shadow-lg min-h-[520px] flex flex-col">
+    <div className="bg-white rounded-3xl p-8 shadow-lg min-h-520px flex flex-col">
       {/* Title with emoji */}
       <div className="flex items-center gap-3 mb-8">
         <span className="text-2xl">🍚</span>
@@ -20,7 +20,7 @@ export default function DietCard() {
       </div>
 
       {/* 🔵 Calculated Circular Progress */}
-      <div className="flex justify-center mb-10">
+      <div className="flex justify-center mb-5">
         <div
           className="w-44 h-44 rounded-full flex items-center justify-center"
           style={{
@@ -45,7 +45,7 @@ export default function DietCard() {
       </div>
 
       {/* Meal Breakdown */}
-      <div className="space-y-5 text-base mt-auto">
+      <div className="space-y-5 text-base mt-10">
         <div className="flex justify-between">
           <span>Breakfast</span>
           <span className="font-medium">350 kcal</span>
@@ -58,6 +58,11 @@ export default function DietCard() {
 
         <div className="flex justify-between">
           <span>Snacks</span>
+          <span className="font-medium">150 kcal</span>
+        </div>
+
+        <div className="flex justify-between">
+          <span>Dinner</span>
           <span className="font-medium">150 kcal</span>
         </div>
       </div>

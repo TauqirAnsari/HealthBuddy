@@ -85,7 +85,7 @@ export default function ExerciseCard() {
       </div>
 
       {/* Exercise List */}
-      <div className="bg-green-50 rounded-2xl p-6 space-y-5 text-base mb-10">
+      <div className="bg-green-50 rounded-2xl p-6 space-y-5 text-base mb-4">
         {exercises.map((exercise) => (
           <label
             key={exercise.id}
@@ -111,7 +111,7 @@ export default function ExerciseCard() {
       </div>
 
       {/* Weekly Exercise Chart */}
-      <div className="mt-auto">
+      <div className="mt-2">
         <p className="text-sm font-semibold text-slate-600 mb-3">
           Weekly Exercise
         </p>

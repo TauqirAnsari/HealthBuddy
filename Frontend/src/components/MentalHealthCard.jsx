@@ -78,7 +78,7 @@ export default function MentalHealthCard() {
   }, [])
 
   return (
-    <div className="bg-white rounded-3xl p-8 shadow-lg min-h-[520px] flex flex-col">
+    <div className="bg-white rounded-3xl p-8 shadow-lg min-h-520px flex flex-col">
       {/* Title */}
       <div className="flex items-center gap-3 mb-6">
         <span className="text-2xl">🧘‍♂️</span>
@@ -88,7 +88,7 @@ export default function MentalHealthCard() {
       </div>
 
       {/* Timer */}
-      <div className="bg-blue-50 rounded-2xl p-6 text-center mb-6">
+      <div className="bg-blue-50 rounded-2xl p-6 text-center mb-4">
         <p className="text-5xl font-bold mb-5">
           {minutes}:{seconds}
         </p>
@@ -116,7 +116,7 @@ export default function MentalHealthCard() {
           src={`https://www.youtube.com/embed/${videoId}?enablejsapi=1`}
           title="Relaxing sound"
           allow="autoplay; encrypted-media"
-          className="w-full h-[200px] rounded-2xl"
+          className="w-full h-100px rounded-2xl"
         />
       </div>
 
