@@ -6,7 +6,9 @@ export  const RegisterApi = async (data) => {
 }
 
 export  const LoginApi = async (data) => {
-    return await Api.post('users/login', data);
+    return await Api.post('users/login', data,{
+        withCredentials: true
+    });
 }   
 
 

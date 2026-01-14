@@ -15,14 +15,14 @@ module.exports.authUser = async (req, res, next) => {
         }
 
         if (!token) {
-            return res.status(401).json({ message: 'YOU ARE UNAUTHORIZED || PLEAS LOGIN FIRST' });
+            return res.status(401).json({ message: "Unauthorized" });
         }
 
         const decoded = jwt.verify(token, process.env.JWT_SECRET);
         const user = await userModel.findById(decoded._id).select('-password');
 
         if (!user) {
-            return res.status(401).json({ message: 'YOU ARE UNAUTHORIZED || PLEAS LOGIN FIRST' });
+            return res.status(401).json({ message: 'YOU ARE UNAUTHORIZED || PLEASE LOGIN FIRST' });
         }
 
         req.user = await userModel.findById(decoded._id).select('-password');
