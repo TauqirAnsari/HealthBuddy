@@ -128,12 +128,12 @@ const ProductCard = ({ product }) => (
 
 // --- Main Layout ---
 
-const Product = () => {
+export const Product = () => {
   return (
     <div className="min-h-screen bg-sky-50 font-sans selection:bg-sky-200 selection:text-sky-900">
 
       {/* Main Content Div (White box over pastel background) */}
-      <div className="container mx-auto px-4 mt-8 mb-12">
+      <div className="container mx-auto px-4 mt-1 mb-12">
         <div className="bg-white rounded-2xl shadow-xl p-6 md:p-10 min-h-[80vh]">
           
           {/* Slider Section */}
@@ -157,5 +157,3 @@ const Product = () => {
     </div>
   );
 };
-
-export default Product;
