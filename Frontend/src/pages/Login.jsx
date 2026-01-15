@@ -43,15 +43,18 @@ const Login = () => {
       <div className="absolute bottom-20 right-20 w-48 h-48 bg-blue-300/30 rounded-full blur-xl pointer-events-none"></div>
 
       {/* Logo */}
-      <div className="absolute top-6 left-6 flex cursor-pointer">
-        <div className="w-10 h-10 bg-blue-600 rounded-lg flex items-center justify-center mr-2 text-white font-bold text-2xl relative overflow-hidden">
-          H
-          <div className="absolute top-0 right-0 w-4 h-4 bg-white opacity-20 rounded-bl-full"></div>
+
+      <Link to="/" >
+        <div className="absolute top-6 left-6 flex cursor-pointer">
+          <div className="w-10 h-10 bg-blue-600 rounded-lg flex items-center justify-center mr-2 text-white font-bold text-2xl relative overflow-hidden">
+            H
+            <div className="absolute top-0 right-0 w-4 h-4 bg-white opacity-20 rounded-bl-full"></div>
+          </div>
+          <span className="text-2xl font-bold text-gray-800 tracking-tight">
+            Health<span className="text-blue-600">Buddy</span>
+          </span>
         </div>
-        <span className="text-2xl font-bold text-gray-800 tracking-tight">
-          Health<span className="text-blue-600">Buddy</span>
-        </span>
-      </div>
+      </Link>
 
       {/* Card */}
       <div className="relative z-10 w-full max-w-sm min-h-130 bg-white rounded-3xl shadow-[0_10px_30px_rgba(0,0,0,0.08)] p-8 md:p-10">

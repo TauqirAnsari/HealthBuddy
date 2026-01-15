@@ -21,8 +21,6 @@ const ProfileForm = () => {
     weeklyBudget: ''
   });
 
-  // State to toggle between Edit and View mode
-  // set to 'true' if you want it editable by default, 'false' if you want it locked initially
   const [isEditing, setIsEditing] = useState(true);
   const [loading, setLoading] = useState(false);
 

@@ -8,17 +8,21 @@ const Navbar = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isProfileOpen, setIsProfileOpen] = useState(false);
   const [user, setUser] = useState(false);
+
   useEffect(() => {
-    ProfileApi().then((res) => {
-      if (res.status === 200) {
-        setUser(true);
-      } else {
-        setIsMobileMenuOpen(false);
-        setUser(false);
-        navigate("/login");
-      }
-    });
-  });
+    ProfileApi()
+      .then((res) => {
+        if (res.status === 200) {
+          setUser(true);
+        } else {
+          setIsMobileMenuOpen(false);
+          setUser(false);
+          navigate("/login");
+        }
+      })
+      .catch(() => setUser(false));
+  }, []);
+
   const handlelogout = () => {
     LogoutApi().then((res) => {
       if (res.status == 200) {
@@ -33,6 +37,7 @@ const Navbar = () => {
     <nav className="w-screen bg-white shadow-sm sticky top-0 z-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-20">
+
           {/* --- LEFT SIDE: LOGO --- */}
           <Link to="/">
             <div className="shrink-0 flex items-center cursor-pointer">
