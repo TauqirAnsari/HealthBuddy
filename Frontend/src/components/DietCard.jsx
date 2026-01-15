@@ -1,4 +1,9 @@
+import { useNavigate } from "react-router-dom";
+
 export default function DietCard() {
+
+  const navigate = useNavigate();
+
   // 🔢 These values will later come from backend
   const caloriesConsumed = 1850
   const calorieGoal = 2200
@@ -11,12 +16,23 @@ export default function DietCard() {
 
   return (
     <div className="bg-white rounded-3xl p-8 shadow-lg min-h-520px flex flex-col">
-      {/* Title with emoji */}
-      <div className="flex items-center gap-3 mb-8">
-        <span className="text-2xl">🍚</span>
-        <h3 className="text-xl font-semibold text-slate-700">
-          Diet
-        </h3>
+      {/* 🔥 Header: Diet title + DietList button */}
+      <div className="flex items-center justify-between mb-8">
+        <div className="flex items-center gap-3">
+          <span className="text-2xl">🍚</span>
+          <h3 className="text-xl font-semibold text-slate-700">
+            Diet
+          </h3>
+        </div>
+
+        <button
+          onClick={() => navigate("/diettable")}
+          className="px-4 py-1.5 text-sm font-medium text-orange-600
+            border border-orange-400 rounded-full
+           hover:bg-orange-100 transition"
+        >
+          DietList
+        </button>
       </div>
 
       {/* 🔵 Calculated Circular Progress */}
