@@ -15,3 +15,8 @@ export  const LoginApi = async (data) => {
 export const ProfileApi = async () => {
     return Api.get('users/profile');
 };
+export const LogoutApi = () => {
+    return  Api.post('users/logout',{
+    credentials:"include"
+    });
+};

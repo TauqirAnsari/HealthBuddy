@@ -80,3 +80,11 @@ module.exports.getUserProfile = async (req, res) => {
         user: req.user
     });
 };
+module.exports.LogoutUserProfile = async (req, res) => {
+    res.clearCookie("token",{
+        httpOnly:true,
+        secure:true,
+        sameSite: 'lax',
+    })
+    res.json({msg:"Hello"})
+};
