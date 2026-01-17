@@ -55,13 +55,14 @@ module.exports.loginUser = async (req, res) => {
 
     const token = user.generateAuthToken();
 
-    res.cookie('token', token, { 
-        httpOnly: true, 
-        secure: false,
-        sameSite: 'lax',
-        path: '/',
-        maxAge: 7 * 24 * 60 * 60 * 1000
-    });
+    res.cookie('token', token, {
+  httpOnly: true,
+  secure: false,
+  sameSite: 'lax',
+  path: '/healthbuddy',   // ✅ IMPORTANT
+  maxAge: 7 * 24 * 60 * 60 * 1000
+});
+
 
     res.status(200).json({
         message: 'Login successful',
@@ -81,11 +82,12 @@ module.exports.getUserProfile = async (req, res) => {
     });
 };
 module.exports.LogoutUserProfile = async (req, res) => {
-    res.clearCookie("token",{
-        httpOnly:true,
-        secure:false,
-        sameSite: 'lax',
-        path:'/'
-    })
+    res.clearCookie("token", {
+    httpOnly: true,
+    secure: false,
+    sameSite: 'lax',
+    path: '/healthbuddy'
+    });
+
     return res.status(200).json({ seccess:true, message: "Logout successfully" });
 };

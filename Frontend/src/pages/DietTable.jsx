@@ -1,15 +1,38 @@
-import { useLocation, useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import API from "../config/AxiosDietApi";
 
-const DietTable = () => {
-  const { state } = useLocation();
+export const DietTable = () => {
   const navigate = useNavigate();
+  const [diet, setDiet] = useState(null);
+  const [loading, setLoading] = useState(true);
 
-  if (!state || !state.dietPlan) {
+  useEffect(() => {
+    API.get("/api/diet/latest")
+      .then((res) => {
+        setDiet(res.data);
+        setLoading(false);
+      })
+      .catch(() => {
+        setLoading(false);
+        navigate("/dashboard");
+      });
+  }, [navigate]);
+
+  if (loading) {
+    return (
+      <div className="p-10 text-center text-lg">
+        Loading diet plan...
+      </div>
+    );
+  }
+
+  if (!diet) {
     return (
       <div className="p-10 text-center">
         <p>No diet data found</p>
         <button
-          onClick={() => navigate("/")}
+          onClick={() => navigate("/dashboard")}
           className="mt-4 bg-blue-600 text-white px-4 py-2 rounded"
         >
           Go Back
@@ -17,8 +40,6 @@ const DietTable = () => {
       </div>
     );
   }
-
-  const { bmi, bmr, dailyCalories, dietPlan } = state;
 
   return (
     <div className="min-h-screen bg-blue-50 p-6">
@@ -31,12 +52,20 @@ const DietTable = () => {
 
         {/* Summary */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
-          <div className="p-4 bg-blue-100 rounded">BMI: {bmi.bmi} ({bmi.category})</div>
-          <div className="p-4 bg-blue-100 rounded">BMR: {bmr} kcal</div>
           <div className="p-4 bg-blue-100 rounded">
-            Daily Calories: {dailyCalories} kcal
+            BMI: {diet.bmi?.bmi ?? "--"} ({diet.bmi?.category ?? "N/A"})
+          </div>
+
+          <div className="p-4 bg-blue-100 rounded">
+            BMR: {diet.bmr ?? "--"} kcal
+          </div>
+
+          <div className="p-4 bg-blue-100 rounded">
+            Daily Calories: {diet.dailyCalories} kcal
           </div>
         </div>
+
+
 
         {/* Diet Table */}
         <div className="overflow-x-auto">
@@ -53,9 +82,11 @@ const DietTable = () => {
             </thead>
 
             <tbody>
-              {dietPlan.daily_plan.map((dayPlan, index) => (
+              {diet.daily_plan.map((dayPlan, index) => (
                 <tr key={index} className="text-center">
-                  <td className="border p-2 font-semibold">{dayPlan.day}</td>
+                  <td className="border p-2 font-semibold">
+                    {dayPlan.day}
+                  </td>
 
                   <td className="border p-2">
                     {dayPlan.breakfast.meal_name}
@@ -90,7 +121,7 @@ const DietTable = () => {
                   </td>
 
                   <td className="border p-2 font-bold">
-                    {dayPlan.calories} kcal
+                    {dayPlan.totalCalories} kcal
                   </td>
                 </tr>
               ))}
@@ -98,14 +129,9 @@ const DietTable = () => {
           </table>
         </div>
 
-        {/* Budget Note */}
-        <div className="mt-6 p-4 bg-green-100 rounded">
-          <strong>Budget Note:</strong> {dietPlan.budget_note}
-        </div>
       </div>
     </div>
   );
 };
 
-export default DietTable;
-export {DietTable};
+

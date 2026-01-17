@@ -1,140 +1,88 @@
-import { useState, useEffect } from "react"
+import { useEffect, useState } from "react";
+import API from "../config/AxiosDietApi";
 
 export default function ExerciseCard() {
-  /**
-   * ==========================================
-   * 🔴 BACKEND DATA (WILL COME FROM API)
-   * ==========================================
-   * Example API response:
-   *
-   * {
-   *   exercises: [
-   *     { id: 1, name: "30 min Jogging", completed: true },
-   *     { id: 2, name: "20 min Strength Training", completed: true },
-   *     { id: 3, name: "10,000 Steps", completed: false }
-   *   ],
-   *   weeklyProgress: {
-   *     Mon: 2,
-   *     Tue: 1,
-   *     Wed: 2,
-   *     Thu: 3,
-   *     Fri: 2,
-   *     Sat: 1,
-   *     Sun: 0
-   *   }
-   * }
-   */
+  const [today, setToday] = useState(null);
+  const [weekly, setWeekly] = useState([]);
 
-  // 🔹 Mock exercises (replace with backend response)
-  const [exercises, setExercises] = useState([
-    { id: 1, name: "30 min Jogging", completed: true },
-    { id: 2, name: "20 min Strength Training", completed: true },
-    { id: 3, name: "10,000 Steps", completed: false },
-  ])
+  useEffect(() => {
+    API.get("/api/diet/exercise/today")
+      .then(res => setToday(res.data))
+      .catch(() => setToday(null));
 
-  // 🔹 Mock weekly data (replace with backend response)
-  const weeklyData = {
-    Mon: 2,
-    Tue: 1,
-    Wed: 2,
-    Thu: 3,
-    Fri: 2,
-    Sat: 1,
-    Sun: 0,
+    API.get("/api/diet/exercise/weekly")
+      .then(res => setWeekly(res.data))
+      .catch(() => setWeekly([]));
+  }, []);
+
+  if (!today) {
+    return (
+      <div className="bg-white rounded-3xl p-8 shadow-lg min-h-[520px]">
+        <h3 className="text-xl font-semibold mb-4">🏃‍♂️ Exercises</h3>
+        <p className="text-slate-500">
+          Generate your diet to unlock exercise plan.
+        </p>
+      </div>
+    );
   }
 
-  /**
-   * ==========================================
-   * 📐 FRONTEND CALCULATION
-   * ==========================================
-   * Bars are calculated as:
-   * (completed exercises / total exercises) * 100
-   */
+  const exercises = [
+    {
+      id: "exercise",
+      name: today.exercise_name,
+      completed: today.exerciseCompleted
+    },
+    {
+      id: "steps",
+      name: "10,000 Steps",
+      completed: today.stepsCompleted
+    }
+  ];
 
-  const totalExercises = exercises.length
+  const toggle = async (type) => {
+    await API.patch(
+      type === "exercise"
+        ? "/api/diet/exercise/complete"
+        : "/api/diet/steps/complete"
+    );
 
-  const weeklyPercentages = Object.entries(weeklyData).map(
-    ([day, completed]) => ({
-      day,
-      percentage:
-        totalExercises === 0
-          ? 0
-          : Math.min((completed / totalExercises) * 100, 100),
-    })
-  )
+    const updated = await API.get("/api/diet/exercise/today");
+    setToday(updated.data);
+  };
 
-  // 🔁 Toggle exercise completion (frontend only for now)
-  const toggleExercise = (id) => {
-    setExercises((prev) =>
-      prev.map((ex) =>
-        ex.id === id
-          ? { ...ex, completed: !ex.completed }
-          : ex
-      )
-    )
-  }
+  const total = 2;
 
   return (
     <div className="bg-white rounded-3xl p-8 shadow-lg min-h-[520px] flex flex-col">
-      {/* Title */}
-      <div className="flex items-center gap-3 mb-8">
-        <span className="text-2xl">🏃‍♂️</span>
-        <h3 className="text-xl font-semibold text-slate-700">
-          Exercises
-        </h3>
-      </div>
+      <h3 className="text-xl font-semibold mb-6">🏃‍♂️ Exercises</h3>
 
-      {/* Exercise List */}
-      <div className="bg-green-50 rounded-2xl p-6 space-y-5 text-base mb-4">
-        {exercises.map((exercise) => (
-          <label
-            key={exercise.id}
-            className="flex items-center gap-4 cursor-pointer"
-          >
+      {/* Today */}
+      <div className="bg-green-50 p-6 rounded-2xl space-y-4 mb-6">
+        {exercises.map(ex => (
+          <label key={ex.id} className="flex gap-4 items-center">
             <input
               type="checkbox"
-              className="w-5 h-5"
-              checked={exercise.completed}
-              onChange={() => toggleExercise(exercise.id)}
+              checked={ex.completed}
+              onChange={() => toggle(ex.id)}
             />
-            <span
-              className={
-                exercise.completed
-                  ? ""
-                  : "text-slate-500"
-              }
-            >
-              {exercise.name}
-            </span>
+            <span>{ex.name}</span>
           </label>
         ))}
       </div>
 
-      {/* Weekly Exercise Chart */}
-      <div className="mt-2">
-        <p className="text-sm font-semibold text-slate-600 mb-3">
-          Weekly Exercise
-        </p>
-
-        {/* Bars */}
-        <div className="flex items-end gap-4 h-40 mb-2">
-          {weeklyPercentages.map(({ day, percentage }) => (
+      {/* Weekly graph */}
+      <div className="mt-auto">
+        <p className="text-sm font-semibold mb-3">Weekly Exercise</p>
+        <div className="flex items-end gap-3 h-36">
+          {weekly.map(d => (
             <div
-              key={day}
-              className="w-full rounded-xl bg-gradient-to-t from-blue-600 to-emerald-400"
-              style={{ height: `${percentage}%` }}
-              title={`${day}: ${Math.round(percentage)}%`}
+              key={d.day}
+              className="w-full bg-gradient-to-t from-blue-600 to-emerald-400 rounded"
+              style={{ height: `${(d.completed / total) * 100}%` }}
             />
-          ))}
-        </div>
-
-        {/* Weekdays */}
-        <div className="flex justify-between text-xs text-slate-500 px-1">
-          {weeklyPercentages.map(({ day }) => (
-            <span key={day}>{day}</span>
           ))}
         </div>
       </div>
     </div>
-  )
+  );
 }
