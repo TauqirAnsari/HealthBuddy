@@ -72,7 +72,7 @@ export default function ExerciseCard() {
 
       {/* Weekly graph */}
       <div className="mt-auto">
-        <p className="text-sm font-semibold mb-3">Weekly Exercise</p>
+        <p className="text-sm font-semibold mb-3">Weekly Exercise Graph</p>
         <div className="flex items-end gap-3 h-36">
           {weekly.map(d => (
             <div
@@ -80,6 +80,11 @@ export default function ExerciseCard() {
               className="w-full bg-gradient-to-t from-blue-600 to-emerald-400 rounded"
               style={{ height: `${(d.completed / total) * 100}%` }}
             />
+          ))}
+        </div>
+        <div className="flex gap-3 mt-2 text-xs text-gray-500 font-semibold justify-between">
+          {[...Array(7)].map((_, i) => (
+            <span key={i} className="w-full text-center">Day{i + 1}</span>
           ))}
         </div>
       </div>

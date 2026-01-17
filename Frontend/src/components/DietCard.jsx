@@ -18,7 +18,7 @@ export default function DietCard() {
 
   if (!diet) {
     return (
-      <div className="bg-white rounded-3xl p-8 shadow-lg min-h-[520px]">
+      <div className="bg-white rounded-3xl p-8 shadow-lg min-h-520px">
         <h3 className="text-xl font-semibold text-slate-700 mb-4">Diet</h3>
         <p className="text-slate-500 mb-6">
           No diet found. Please generate your diet first.
@@ -49,13 +49,13 @@ export default function DietCard() {
   const meals = ["breakfast", "lunch", "evening_snack", "dinner"];
 
   return (
-    <div className="bg-white rounded-3xl p-8 shadow-lg min-h-[520px] flex flex-col">
+    <div className="bg-white rounded-3xl p-8 shadow-lg min-h-520px flex flex-col">
       {/* Header */}
       <div className="flex justify-between mb-6">
         <h3 className="text-xl font-semibold">🍚 Diet</h3>
         <button
           onClick={() => navigate("/diettable")}
-          className="text-orange-600 border border-orange-400 px-4 py-1 rounded-full"
+          className="text-orange-900 border border-orange-400 hover:bg-orange-500 px-4 py-1 rounded-full"
         >
           DietList
         </button>

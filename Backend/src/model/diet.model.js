@@ -49,8 +49,12 @@ const dietSchema = new mongoose.Schema(
       required: true
     },
 
+    bmi: {
+      bmi: Number,
+      category: String
+    },
+    bmr: Number,
     dailyCalories: Number,
-
     daily_plan: [dailyPlanSchema]
   },
   { timestamps: true }

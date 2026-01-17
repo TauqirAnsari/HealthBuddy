@@ -56,10 +56,8 @@ exports.getWeeklyDiet = async (req, res) => {
 
     const diet = await Diet.create({
       user: userId,
-
       bmi: result.bmi,
       bmr: result.bmr,
-
       dailyCalories: Number(result.dailyCalories) || 0,
       daily_plan
     });
@@ -81,7 +79,7 @@ exports.getWeeklyDiet = async (req, res) => {
 // 🔹 DIET CARD – TODAY
 // =====================================================
 exports.getTodayDiet = async (req, res) => {
-  console.log("USER:", req.user._id);
+  // USER ID: req.user._id (remove debug log in production)
   const diet = await Diet.findOne({ user: req.user._id })
     .sort({ createdAt: -1 });
 
