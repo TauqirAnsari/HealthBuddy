@@ -7,15 +7,15 @@ const HeroSlider = () => {
   const slides = [
     {
       id: 1,
-      image: "https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?q=80&w=2070&auto=format&fit=crop",
+      image: "https://i.pinimg.com/736x/f7/55/cc/f755cc97f43a79c8128238752fee1d6b.jpg",
       title: "Running Goals",
       desc: "Track your progress daily"
     },
     {
       id: 2,
-      image: "https://images.unsplash.com/photo-1518611012118-696072aa579a?q=80&w=2070&auto=format&fit=crop", // Yoga/Gym
-      title: "Health Poster",
-      desc: "Join our new sessions"
+      image: "https://i.pinimg.com/1200x/c7/80/73/c78073ec81f43823ef2b4733fce93a17.jpg",
+      title: "Healthy Diet",
+      desc: "Join & Plan your Diet"
     },
     {
       id: 3,
