@@ -82,7 +82,7 @@ const Footer = () => {
 
         {/* --- Divider --- */}
         <div className="border-t border-gray-800 pt-8 mt-12 flex flex-col md:flex-row justify-between items-center text-sm text-gray-500">
-          <p>© 2024 HealthBuddy Inc. All rights reserved.</p>
+          <p>&copy; 2026 HealthBuddy Inc. All rights reserved.</p>
           <div className="flex space-x-6 mt-4 md:mt-0">
              <span className="hover:text-gray-300 cursor-pointer">Security</span>
              <span className="hover:text-gray-300 cursor-pointer">Sitemap</span>

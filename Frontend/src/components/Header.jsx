@@ -7,23 +7,24 @@ const Navbar = () => {
 
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isProfileOpen, setIsProfileOpen] = useState(false);
-  const [user, setUser] = useState(false);
+  const [user, setUser] = useState(null); // ✅ store user object
 
-  // Check user login
+  // Check user login + get user data
   useEffect(() => {
     ProfileApi()
       .then((res) => {
-        if (res.status === 200) setUser(true);
-        else setUser(false);
+        if (res.status === 200) {
+          setUser(res.data.user); // full user
+        }
       })
-      .catch(() => setUser(false));
+      .catch(() => setUser(null));
   }, []);
 
   // Logout handler
   const handleLogout = async () => {
     const res = await LogoutApi();
     if (res?.status === 200) {
-      setUser(false);
+      setUser(null);
       setIsMobileMenuOpen(false);
       setIsProfileOpen(false);
       navigate("/login");
@@ -56,7 +57,7 @@ const Navbar = () => {
               <Link to="/login" className="nav-link">Login</Link>
             )}
 
-            {/* Profile Icon */}
+            {/* ---------- PROFILE ICON ---------- */}
             {user && (
               <div className="relative">
                 <button
@@ -72,11 +73,21 @@ const Navbar = () => {
                   </svg>
                 </button>
 
+                {/* ---------- PROFILE DROPDOWN ---------- */}
                 {isProfileOpen && (
-                  <div className="absolute right-0 mt-2 w-44 bg-white rounded-md shadow-lg">
+                  <div className="absolute right-0 mt-2 w-40 bg-blue-100 rounded-md shadow-lg overflow-hidden text-center">
+  
+                    {/* Username */}
+                    <div className="px-3 py-4 border-b">
+                      <p className="text-sm font-semibold text-gray-800">
+                        Hi, {user.username}
+                      </p>
+                    </div>
+
+                    {/* Logout */}
                     <button
                       onClick={handleLogout}
-                      className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                      className="w-full py-3 text-sm font-medium text-red-600 hover:bg-red-100"
                     >
                       Logout
                     </button>
@@ -104,15 +115,21 @@ const Navbar = () => {
         </div>
       </div>
 
-      {/* ---------- MOBILE MENU (VERTICAL) ---------- */}
+      {/* ---------- MOBILE MENU ---------- */}
       {isMobileMenuOpen && (
         <div className="md:hidden bg-white border-t border-gray-200">
           <div className="flex flex-col px-4 py-3 space-y-2">
 
+            {user && (
+              <div className="px-3 py-2 text-sm text-gray-600 border-b">
+                Hi, <span className="font-semibold">{user.username}</span>
+              </div>
+            )}
+
             <Link
               to="/profileform"
               onClick={() => setIsMobileMenuOpen(false)}
-              className="block w-full px-3 py-2 rounded-md text-gray-700 hover:bg-blue-50"
+              className="block px-3 py-2 rounded-md text-gray-700 hover:bg-blue-50"
             >
               ProfileForm
             </Link>
@@ -120,7 +137,7 @@ const Navbar = () => {
             <Link
               to="/products"
               onClick={() => setIsMobileMenuOpen(false)}
-              className="block w-full px-3 py-2 rounded-md text-gray-700 hover:bg-blue-50"
+              className="block px-3 py-2 rounded-md text-gray-700 hover:bg-blue-50"
             >
               Products
             </Link>
@@ -130,7 +147,7 @@ const Navbar = () => {
                 <Link
                   to="/dashboard"
                   onClick={() => setIsMobileMenuOpen(false)}
-                  className="block w-full px-3 py-2 rounded-md text-gray-700 hover:bg-blue-50"
+                  className="block px-3 py-2 rounded-md text-gray-700 hover:bg-blue-50"
                 >
                   Dashboard
                 </Link>
@@ -146,7 +163,7 @@ const Navbar = () => {
               <Link
                 to="/login"
                 onClick={() => setIsMobileMenuOpen(false)}
-                className="block w-full px-3 py-2 rounded-md text-gray-700 hover:bg-blue-50"
+                className="block px-3 py-2 rounded-md text-gray-700 hover:bg-blue-50"
               >
                 Login
               </Link>

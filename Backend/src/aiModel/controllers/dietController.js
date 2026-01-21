@@ -133,7 +133,7 @@ exports.markMealComplete = async (req, res) => {
     return res.status(400).json({ message: "Invalid meal type" });
   }
 
-  diet.daily_plan[index][mealType].completed = true;
+  diet.daily_plan[index][mealType].completed = !diet.daily_plan[index][mealType].completed;
   await diet.save();
 
   res.json({ success: true });
@@ -175,12 +175,17 @@ exports.completeExercise = async (req, res) => {
   const diet = await Diet.findOne({ user: req.user._id })
     .sort({ createdAt: -1 });
 
+  if (!diet || !diet.daily_plan) {
+    return res.status(404).json({ message: "No diet found" });
+  }
+
   const index = getTodayIndex(diet.createdAt);
   diet.daily_plan[index].exerciseCompleted = true;
-  await diet.save();
 
+  await diet.save();
   res.json({ success: true });
 };
+
 
 // =====================================================
 // 🔹 COMPLETE STEPS
@@ -189,12 +194,17 @@ exports.completeSteps = async (req, res) => {
   const diet = await Diet.findOne({ user: req.user._id })
     .sort({ createdAt: -1 });
 
+  if (!diet || !diet.daily_plan) {
+    return res.status(404).json({ message: "No diet found" });
+  }
+
   const index = getTodayIndex(diet.createdAt);
   diet.daily_plan[index].stepsCompleted = true;
-  await diet.save();
 
+  await diet.save();
   res.json({ success: true });
 };
+
 
 // =====================================================
 // 🔹 WEEKLY EXERCISE GRAPH

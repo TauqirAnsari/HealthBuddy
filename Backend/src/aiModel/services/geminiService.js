@@ -101,12 +101,21 @@ Respond ONLY with valid JSON.
   const rawText = result.response.text();
   const cleanJSON = extractJSON(rawText);
 
+  let parsedDiet;
+  try {
+    parsedDiet = JSON.parse(cleanJSON);
+  } catch (err) {
+    console.error("Gemini JSON Error:", cleanJSON);
+    throw new Error("Invalid AI response format");
+  }
+
   return {
     bmi: bmiData,
     bmr,
     dailyCalories,
-    dietPlan: JSON.parse(cleanJSON)
+    dietPlan: parsedDiet
   };
+
 }
 
 module.exports = { generateDietPlan };
