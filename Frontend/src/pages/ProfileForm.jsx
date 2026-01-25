@@ -3,11 +3,8 @@ import { useState } from 'react';
 import { useNavigate } from "react-router-dom";
 
 const ProfileForm = () => {
-
   const navigate = useNavigate();
 
-
-  // State to handle form data
   const [formData, setFormData] = useState({
     age: '',
     gender: 'male',
@@ -21,21 +18,16 @@ const ProfileForm = () => {
     weeklyBudget: ''
   });
 
-  const [isEditing, setIsEditing] = useState(true);
   const [loading, setLoading] = useState(false);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData((prev) => ({
-      ...prev,
-      [name]: value
-    }));
+    setFormData(prev => ({ ...prev, [name]: value }));
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Basic validation
     if (
       Number(formData.age) <= 0 ||
       Number(formData.height) <= 0 ||
@@ -47,14 +39,12 @@ const ProfileForm = () => {
       return;
     }
 
-    // Activity level mapping (frontend → backend)
     const activityMap = {
       low: "sedentary",
       medium: "moderately_active",
       high: "very_active"
     };
 
-    // 🔁 Prepare data exactly as backend expects
     const payload = {
       gender: formData.gender,
       age: Number(formData.age),
@@ -65,72 +55,47 @@ const ProfileForm = () => {
       dietType: formData.dietType,
       activityLevel: activityMap[formData.activityLevel] || "moderately_active",
       foodAllergies: formData.foodAllergies
-        ? formData.foodAllergies
-            .split(",")
-            .map(item => item.trim())
-            .filter(Boolean)
+        ? formData.foodAllergies.split(",").map(i => i.trim()).filter(Boolean)
         : [],
       weeklyBudget: Number(formData.weeklyBudget)
     };
 
     try {
       setLoading(true);
-
       const res = await getWeeklyDietApi(payload);
-      console.log("Diet Result:", res.data);
 
       alert("Profile saved & diet generated successfully!");
-      setIsEditing(false);
+      navigate("/diettable", { state: res.data });
 
-      navigate("/diettable", {
-      state: res.data
-      });
-
-    } catch (error) {  
-          if (error.response?.status === 401) {
-            alert(error.response.data.message || "Please login first");
-            navigate("/login");
-          } else {
-            alert("Failed to generate diet plan");
-          }
+    } catch (error) {
+      if (error.response?.status === 401) {
+        alert(error.response.data.message || "Please login first");
+        navigate("/login");
+      } else {
+        alert("Failed to generate diet plan");
+      }
     } finally {
       setLoading(false);
     }
   };
 
-
   return (
-   <div className="min-h-screen w-screen bg-blue-100 flex justify-center items-start sm:items-center py-6 sm:py-10 px-3 sm:px-6 font-sans">
+    <div className="min-h-screen w-screen bg-blue-100 flex justify-center items-start sm:items-center py-6 sm:py-10 px-3 sm:px-6 font-sans">
 
-      {/* Card Container */}
       <div className="bg-white w-screen max-w-2xl rounded-xl shadow-xl overflow-hidden p-4 sm:p-6 md:p-8 relative">
 
-        
         {/* Header Section */}
         <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4 mb-8 border-b pb-4">
           <h1 className="text-2xl sm:text-3xl font-bold text-blue-600">Profile</h1>
-          
-          {/* Edit Button (Top Right) */}
-          <button
-            type="button" 
-            onClick={() => setIsEditing(true)}
-            className="flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-800 text-white px-4 py-2 rounded-md transition duration-200 text-sm font-medium w-full sm:w-auto"
-          >
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-              <path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"></path>
-            </svg>
-            Edit
-          </button>
         </div>
 
-        {/* Form */}
         <form onSubmit={handleSubmit} className="space-y-6">
-          
+
           {/* Gender */}
           <div className="grid grid-cols-1 md:grid-cols-3 md:items-center gap-4">
             <label className="font-semibold text-gray-700">Gender:</label>
             <div className="col-span-2 flex gap-6">
-              {['male', 'female', 'other'].map((type) => (
+              {['male', 'female', 'other'].map(type => (
                 <label key={type} className="flex items-center cursor-pointer">
                   <input
                     type="radio"
@@ -138,8 +103,7 @@ const ProfileForm = () => {
                     value={type}
                     checked={formData.gender === type}
                     onChange={handleChange}
-                    disabled={!isEditing}
-                    className="form-radio h-4 w-4 text-blue-600 focus:ring-blue-500"
+                    className="form-radio h-4 w-4 text-blue-600"
                   />
                   <span className="ml-2 capitalize text-gray-700">{type}</span>
                 </label>
@@ -155,9 +119,7 @@ const ProfileForm = () => {
               name="age"
               value={formData.age}
               onChange={handleChange}
-              disabled={!isEditing}
-              className="col-span-2 w-full p-3 text-base border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:bg-gray-50 disabled:text-gray-500"
-
+              className="col-span-2 w-full p-3 border rounded-md"
             />
           </div>
 
@@ -169,8 +131,7 @@ const ProfileForm = () => {
               name="weight"
               value={formData.weight}
               onChange={handleChange}
-              disabled={!isEditing}
-              className="col-span-2 w-full p-3 text-base border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:bg-gray-50 disabled:text-gray-500"
+              className="col-span-2 w-full p-3 border rounded-md"
             />
           </div>
 
@@ -182,8 +143,7 @@ const ProfileForm = () => {
               name="height"
               value={formData.height}
               onChange={handleChange}
-              disabled={!isEditing}
-              className="col-span-2 w-full p-3 text-base border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:bg-gray-50 disabled:text-gray-500"
+              className="col-span-2 w-full p-3 border rounded-md"
             />
           </div>
 
@@ -194,8 +154,7 @@ const ProfileForm = () => {
               name="goal"
               value={formData.goal}
               onChange={handleChange}
-              disabled={!isEditing}
-              className="col-span-2 w-full p-3 text-base border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white disabled:bg-gray-50 disabled:text-gray-500"
+              className="col-span-2 w-full p-3 border rounded-md"
             >
               <option value="weight_loss">Weight Loss</option>
               <option value="weight_gain">Weight Gain</option>
@@ -212,8 +171,7 @@ const ProfileForm = () => {
               name="profession"
               value={formData.profession}
               onChange={handleChange}
-              disabled={!isEditing}
-              className="col-span-2 w-full p-3 text-base border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:bg-gray-50 disabled:text-gray-500"
+              className="col-span-2 w-full p-3 border rounded-md"
             />
           </div>
 
@@ -224,8 +182,7 @@ const ProfileForm = () => {
               name="dietType"
               value={formData.dietType}
               onChange={handleChange}
-              disabled={!isEditing}
-              className="col-span-2 w-full p-3 text-base border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white disabled:bg-gray-50 disabled:text-gray-500"
+              className="col-span-2 w-full p-3 border rounded-md"
             >
               <option value="vegetarian">Vegetarian</option>
               <option value="vegan">Vegan</option>
@@ -241,8 +198,7 @@ const ProfileForm = () => {
               name="activityLevel"
               value={formData.activityLevel}
               onChange={handleChange}
-              disabled={!isEditing}
-              className="col-span-2 w-full p-3 text-base border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white disabled:bg-gray-50 disabled:text-gray-500"
+              className="col-span-2 w-full p-3 border rounded-md"
             >
               <option value="low">Low</option>
               <option value="medium">Medium</option>
@@ -257,10 +213,10 @@ const ProfileForm = () => {
               name="foodAllergies"
               value={formData.foodAllergies}
               onChange={handleChange}
-              disabled={!isEditing}
               rows="3"
-              className="col-span-2 w-full p-3 text-base border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:bg-gray-50 disabled:text-gray-500 resize-none"
-            ></textarea>
+              placeholder="If there is no food allergy, write No"
+              className="col-span-2 w-full p-3 border rounded-md resize-none"
+            />
           </div>
 
           {/* Weekly Budget */}
@@ -273,24 +229,22 @@ const ProfileForm = () => {
                 name="weeklyBudget"
                 value={formData.weeklyBudget}
                 onChange={handleChange}
-                disabled={!isEditing}
-                className="w-full pl-10 p-3 text-base border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:bg-gray-50 disabled:text-gray-500"
+                className="w-full pl-10 p-3 border rounded-md"
               />
             </div>
           </div>
 
-          {/* Update / Save Button */}
-          {isEditing && (
-            <div className="mt-8 pt-4">
-              <button
-                type="submit"
-                disabled={loading}
-                className="w-full md:w-auto bg-blue-600 hover:bg-blue-800 text-white font-bold py-2 px-8 rounded-md shadow-md transition duration-200"
-              >
-                {loading ? 'Generating Diet...' : 'Update / Save'}
-              </button>
-            </div>
-          )}
+          {/* Submit Button */}
+          <div className="mt-8 pt-4">
+            <button
+              type="submit"
+              disabled={loading}
+              className="w-full md:w-auto bg-blue-600 hover:bg-blue-800 text-white font-bold py-2 px-8 rounded-md shadow-md"
+            >
+              {loading ? 'Generating Diet...' : 'Generate Diet'}
+            </button>
+          </div>
+
         </form>
       </div>
     </div>
