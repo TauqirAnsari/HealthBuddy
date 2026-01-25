@@ -57,7 +57,7 @@ const HeroSlider = () => {
 
   return (
     // Main Container with Blue Gradient Background
-    <div className="w-screen bg-linear-to-r from-blue-400 to-blue-600 py-10 md:py-16 relative overflow-hidden">
+    <div className="w-screen bg-linear-to-r from-blue-200 to-blue-600 py-10 md:py-16 relative overflow-hidden">
       
       {/* Content Container */}
       <div className="max-w-350 mx-auto h-75 md:h-112.5 relative flex items-center justify-center perspective-1000">
