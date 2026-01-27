@@ -9,6 +9,7 @@ const mealSchema = new mongoose.Schema(
       default: false
     }
   },
+  
   { _id: false }
 );
 
@@ -17,20 +18,17 @@ const dailyPlanSchema = new mongoose.Schema(
     day: String, // Day 1 - Day 7
     date: Date,
 
-    // 🔥 Exercise
     exercise_name: String,
     exerciseCompleted: {
       type: Boolean,
       default: false
     },
 
-    // 👟 Steps
     stepsCompleted: {
       type: Boolean,
       default: false
     },
 
-    // 🍽 Meals
     breakfast: mealSchema,
     lunch: mealSchema,
     evening_snack: mealSchema,

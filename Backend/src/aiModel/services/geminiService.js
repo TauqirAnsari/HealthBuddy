@@ -26,7 +26,7 @@ async function generateDietPlan(userData) {
     weeklyBudget
   } = userData;
 
-  // ✅ Calculations
+  // Calculations
   const bmiData = calculateBMI(weight, height);
   const bmr = calculateBMR(weight, height, age, gender);
   const dailyCalories = calculateTDEE(bmr, activityLevel);

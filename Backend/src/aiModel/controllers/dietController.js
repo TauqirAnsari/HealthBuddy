@@ -29,7 +29,7 @@ const normalizeMeal = (meal) => ({
 });
 
 // =====================================================
-// 🔹 GENERATE WEEKLY DIET
+// GENERATE WEEKLY DIET
 // =====================================================
 exports.getWeeklyDiet = async (req, res) => {
   try {
@@ -76,7 +76,7 @@ exports.getWeeklyDiet = async (req, res) => {
 };
 
 // =====================================================
-// 🔹 DIET CARD – TODAY
+// DIET CARD – TODAY
 // =====================================================
 exports.getTodayDiet = async (req, res) => {
   // USER ID: req.user._id (remove debug log in production)
@@ -115,7 +115,7 @@ exports.getTodayDiet = async (req, res) => {
 
 
 // =====================================================
-// 🔹 MARK MEAL COMPLETE
+// MARK MEAL COMPLETE
 // =====================================================
 exports.markMealComplete = async (req, res) => {
   const { mealType } = req.body;
@@ -140,7 +140,7 @@ exports.markMealComplete = async (req, res) => {
 };
 
 // =====================================================
-// 🔹 EXERCISE CARD – TODAY
+// EXERCISE CARD – TODAY
 // =====================================================
 exports.getTodayExercise = async (req, res) => {
   const diet = await Diet.findOne({ user: req.user._id })
@@ -169,7 +169,7 @@ exports.getTodayExercise = async (req, res) => {
 };
 
 // =====================================================
-// 🔹 COMPLETE EXERCISE
+// COMPLETE EXERCISE
 // =====================================================
 exports.completeExercise = async (req, res) => {
   const diet = await Diet.findOne({ user: req.user._id })
@@ -188,7 +188,7 @@ exports.completeExercise = async (req, res) => {
 
 
 // =====================================================
-// 🔹 COMPLETE STEPS
+// COMPLETE STEPS
 // =====================================================
 exports.completeSteps = async (req, res) => {
   const diet = await Diet.findOne({ user: req.user._id })
@@ -207,13 +207,13 @@ exports.completeSteps = async (req, res) => {
 
 
 // =====================================================
-// 🔹 WEEKLY EXERCISE GRAPH
+// WEEKLY EXERCISE GRAPH
 // =====================================================
 exports.getWeeklyExercise = async (req, res) => {
   const diet = await Diet.findOne({ user: req.user._id })
     .sort({ createdAt: -1 });
 
-  // 🔐 IMPORTANT GUARD
+  // IMPORTANT GUARD
   if (!diet || !diet.daily_plan) {
     return res.status(404).json([]);
   }
@@ -231,7 +231,7 @@ exports.getWeeklyExercise = async (req, res) => {
 
 
 // =====================================================
-// 🔹 GET LATEST DIET (OPTIONAL)
+// GET LATEST DIET (OPTIONAL)
 // =====================================================
 exports.getLatestDiet = async (req, res) => {
   const diet = await Diet.findOne({ user: req.user._id })

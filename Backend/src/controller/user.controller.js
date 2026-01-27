@@ -59,7 +59,7 @@ module.exports.loginUser = async (req, res) => {
   httpOnly: true,
   secure: false,
   sameSite: 'lax',
-  path: '/healthbuddy',   // ✅ IMPORTANT
+  path: '/healthbuddy',   // IMPORTANT
   maxAge: 7 * 24 * 60 * 60 * 1000
 });
 
