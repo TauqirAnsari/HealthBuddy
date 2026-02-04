@@ -22,10 +22,4 @@ app.use('/healthbuddy/v1/users', userRoutes);
 app.use('/healthbuddy/v1/api/diet', dietRouter); // Diet recommendation routes
 
 
-
-// app.get("/",(req,res)=>{
-//     res.send("Hello WoRld")
-// })
-
-
 module.exports = app;
